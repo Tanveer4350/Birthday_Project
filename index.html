@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎉</title>
+
+<style>
+/* ===== RESET ===== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
+}
+
+body{
+    height:100vh;
+    background:#000;
+    overflow:hidden;
+}
+
+/* ===== BACKGROUND BALLOONS ===== */
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+}
+.balloon{
+    position:absolute;
+    bottom:-120px;
+    width:42px;
+    height:58px;
+    border-radius:50%;
+    opacity:0.8;
+    animation:floatUp linear infinite;
+    filter:drop-shadow(0 0 8px rgba(255,255,255,.4));
+}
+.balloon::after{
+    content:"";
+    position:absolute;
+    bottom:-20px;
+    left:50%;
+    width:2px;
+    height:20px;
+    background:#aaa;
+}
+@keyframes floatUp{
+    to{ transform:translateY(-120vh); }
+}
+
+/* ===== HEADER ===== */
+.header{
+    text-align:center;
+    padding:18px;
+}
+.header h1{
+    font-size:56px;
+    color:white;
+    text-shadow:0 0 25px rgba(255,255,255,1);
+}
+
+/* ===== SCROLL AREA ===== */
+.scroll-x{
+    height:calc(100vh - 110px);
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+.scroll-x::-webkit-scrollbar{ display:none; }
+
+/* ===== TRACK ===== */
+.track{
+    display:flex;
+    will-change:transform;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-rows:240px 240px;
+    grid-auto-flow:column;
+    gap:20px;
+    padding:35px;
+}
+
+/* ===== CARD ===== */
+.card{
+    width:190px;
+    height:240px;
+    border-radius:16px;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 12px 30px rgba(255,255,255,.15);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .35s ease, box-shadow .35s ease;
+}
+
+/* ✨ HOVER GLOW */
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,1),
+        0 0 30px rgba(255,255,255,.9),
+        0 18px 40px rgba(255,255,255,.4);
+}
+
+/* 🔍 CLICK ZOOM */
+.card.zoomed{
+    transform:scale(1.35);
+    z-index:5;
+    box-shadow:0 0 50px rgba(255,255,255,1);
+}
+
+/* FRONT */
+.card-front{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:600;
+}
+
+/* BACK */
+.card-back{
+    position:absolute;
+    inset:0;
+    padding:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:14px;
+    line-height:1.5;
+    opacity:0;
+    transition:opacity .3s ease;
+}
+
+.card.revealed .card-front{ opacity:0; }
+.card.revealed .card-back{ opacity:1; }
+
+.special{
+    background:linear-gradient(145deg,#667eea,#764ba2);
+    border:3px solid gold;
+}
+
+/* ===== SPARKLES ===== */
+.sparkle{
+    position:fixed;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    pointer-events:none;
+    animation:sparkleFade .9s ease-out forwards;
+}
+@keyframes sparkleFade{
+    to{
+        transform:translate(var(--x), var(--y)) scale(0);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background" id="bg"></div>
+
+<div class="header">
+    <h1>🎉 Happy Birthday (Name here)🎂</h1>
+</div>
+
+<div class="scroll-x" id="scrollX">
+    <div class="track" id="track">
+        <div class="grid" id="gridA"></div>
+        <div class="grid" id="gridB"></div>
+        <div class="grid" id="gridC"></div>
+    </div>
+</div>
+
+<script>
+/* ===== BALLOONS ===== */
+setInterval(()=>{
+    const b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*100+"vw";
+    b.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    b.style.animationDuration=Math.random()*5+6+"s";
+    bg.appendChild(b);
+    setTimeout(()=>b.remove(),12000);
+},700);
+
+/* ===== CURSOR SPARKLES ===== */
+document.addEventListener("mousemove",(e)=>{
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=e.clientX+"px";
+    s.style.top=e.clientY+"px";
+    s.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    s.style.setProperty("--x",(Math.random()*30-15)+"px");
+    s.style.setProperty("--y",(Math.random()*30-15)+"px");
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),800);
+});
+
+/* ===== CLICK CELEBRATION SPARKLES ===== */
+function celebrate(){
+    for(let i=0;i<80;i++){
+        const s=document.createElement("div");
+        s.className="sparkle";
+        s.style.left=Math.random()*innerWidth+"px";
+        s.style.top=Math.random()*innerHeight+"px";
+        s.style.background=`hsl(${Math.random()*360},100%,60%)`;
+        s.style.setProperty("--x",(Math.random()*400-200)+"px");
+        s.style.setProperty("--y",(Math.random()*400-200)+"px");
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),1000);
+    }
+}
+
+/* ===== CARD DATA ===== */
+const cards=[
+"#1|Joy✨",
+"#2|Keep smiling 😄","#3|Success 🚀","#4|Believe 💪","#5|Happiness 💖",
+"#6|Bright future 🌈","#7|Shine 🌟","#8|Peace 🤍","#9|Celebrate 🎉",
+"#10|You matter 👑","#11|Dream big 🌠","#12|Kindness 💫","#13|Laughter 😄",
+"#14|Victory 🏆","🎁 Special|You are truly special ❤️",
+"#16|Peace 🌿","#17|Plans ✨","#18|Smile 😊","#19|Success 🎁","#20|Amazing 🌟",
+"#21|Love 💖","#22|Celebrate 🎈","#23|Journey 🚀","#24|Joy 🎊",
+"#25|Bright 🌞","#26|Confidence 💪","#27|Happiness 🌸","#28|Appreciated 💫",
+"#29|Life 💖","#30|Magic 🎂"
+];
+
+function makeCard(text){
+    const [front,back]=text.split("|");
+    const d=document.createElement("div");
+    d.className="card"+(front.includes("Surprise")?" special":"");
+    d.style.background=`hsl(${Math.random()*360},70%,60%)`;
+    d.innerHTML=`<div class="card-front">${front}</div>
+                 <div class="card-back">${back}</div>`;
+    d.onclick=()=>{
+        d.classList.toggle("revealed");
+        d.classList.toggle("zoomed");
+        celebrate(); // 🎆 celebration sparkles
+    };
+    return d;
+}
+
+[gridA,gridB,gridC].forEach(g=>{
+    cards.forEach(c=>g.appendChild(makeCard(c)));
+});
+
+/* ===== INFINITE LOOP ===== */
+const scroll=document.getElementById("scrollX");
+const baseWidth=gridA.scrollWidth;
+scroll.scrollLeft=baseWidth;
+
+scroll.addEventListener("scroll",()=>{
+    if(scroll.scrollLeft<=0){
+        scroll.scrollLeft+=baseWidth;
+    }
+    else if(scroll.scrollLeft>=baseWidth*2){
+        scroll.scrollLeft-=baseWidth;
+    }
+});
+</script>
+
+</body>
+</html>
